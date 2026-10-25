@@ -1,0 +1,119 @@
+.section-sign-up {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sign-up-container {
+  /* width: 20rem; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  padding: 1.5rem; /* O REM LATERAL ERA 0 ANTES DAS INFORMAÇÕES DE INDISPONIBILIDADE */
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid white;
+  border-radius: 1rem;
+  gap: 1.5rem;
+}
+
+.sign-up-container h2 {
+  font-size: 2rem;
+  color: var(--palette-navy-700);
+}
+
+/* ---------------------------------------------------- */
+/* INFORMAÇÃO DE INDISPONIBILIDADE DA FUNÇÃO NO MOMENTO */
+/* ---------------------------------------------------- */
+
+.feature-unavailable-text {
+  font-size: 1.3rem;
+  color: var(--palette-navy-700);
+}
+
+/* ---------------------------------------------------- */
+
+.form-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding: 0px 2.2rem;
+}
+
+/* Container que posiciona o input e a label juntos */
+.input-group {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+/* Estilo básico do input */
+.input-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid white;
+  border-radius: 4px;
+  outline: none;
+  font-size: 1rem;
+}
+
+/* Posiciona a label exatamente em cima da linha do input */
+.input-group label {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  padding: 0 4px;
+  color: #999;
+  transition: 0.2s ease all;
+  pointer-events: none; /* Permite clicar no input através da label */
+}
+
+/* 
+  Quando o input recebe foco (:focus) OU quando o placeholder NÃO está visível
+  (significa que o usuário já digitou algo), a label sobe e diminui de tamanho.
+*/
+.input-group input:focus ~ label,
+.input-group input:not(:placeholder-shown) ~ label {
+  top: 0;
+  font-size: 0.85rem;
+  color: var(--palette-blue-500); /* Cor de destaque ao focar */
+  border-radius: 0.15rem;
+}
+
+/* Muda a borda do input ao focar */
+.input-group input:focus {
+  border-color: var(--palette-blue-500);
+}
+
+/* Deixar o botão mais apagado enquanto os inputs não forem validos */
+.sign-up-button {
+  width: 100%;
+  padding: 0.6rem 0rem;
+  font-size: 1rem;
+  color: var(--color-button-text);
+  background-color: var(--color-button-bg);
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+
+.sign-up-button:disabled {
+  background-color: var(--color-button-bg);
+  color: var(--color-button-text);
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+.sign-up-button:not(:disabled):hover {
+  color: var(--color-button-text-hover);
+  background-color: var(--color-button-bg-hover);
+  box-shadow: 0 6px 12px rgba(0,0,0,.15);
+}

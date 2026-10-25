@@ -1,0 +1,29 @@
+<Footer>
+    <div class="footer-links">
+        <a href="https://www.linkedin.com/in/bcesarr/" aria-label="Linkedin" target="_blank" rel="noopener noreferrer">
+            <img src="icons/linkedin-icon.svg" alt="linkedin" class="footer-icon-linkedin">
+        </a>
+
+        <a href="https://www.github.com/bcesarr" aria-label="Github" target="_blank" rel="noopener noreferrer">
+            <img src="icons/github-icon.svg" alt="github" class="footer-icon-github"> 
+        </a>
+        
+        <img src="icons/vertical-bar-icon.svg" alt="icone de separação" class="footer-icon-bar">
+    </div>
+
+    <div class="footer-info">
+        <p>&copy; {{ currentYear }} Bruno Cesar.</p>
+    </div>
+
+    @if (visitCounter.totalVisits() !== null && visitCounter.visitorCount() !== null) {
+        <div class="site-footer-stats">
+            <p>
+                {{ visitCounter.visitorCount() }} Pessoas passaram por aqui
+            </p>
+            <p>
+                Total de: {{ visitCounter.totalVisits() }}
+                {{ visitCounter.totalVisits() === 1 ? 'acesso' : 'acessos' }}
+            </p>
+        </div>
+    }
+</Footer>

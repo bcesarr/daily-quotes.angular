@@ -1,0 +1,37 @@
+<section aria-label="Frase do dia" class="section-quote">
+  <div class="quote-container">
+
+    @if (errorMessage(); as error) {
+      <p class="quote-error" role="alert">
+        {{ error }}
+      </p>
+    }
+
+    @if (quote(); as currentQuote) {
+      <blockquote class="quote-text">
+        {{ currentQuote.text }}
+      </blockquote>
+
+      @if (currentQuote.author_name) {
+        <p class="quote-author">
+          {{ currentQuote.author_name }}
+        </p>
+      }
+    }
+
+    @if (isLoadingQuote()) {
+      <p class="quote-loading">
+        Carregando frase...
+      </p>
+    }
+
+    <button
+      type="button"
+      class="quote-button"
+      (click)="showNewQuote()"
+    >
+      Nova Frase
+    </button>
+
+  </div>
+</section>

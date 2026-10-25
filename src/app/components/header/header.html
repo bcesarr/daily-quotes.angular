@@ -1,0 +1,41 @@
+<header>
+    <div class="logo-container">
+        <a routerLink="/">
+            <h1>Plinsight</h1>
+        </a>
+    </div>
+
+    <nav class="desktop-menu">
+        <a class="link-line-animation" routerLink="/">Inicio</a>
+
+        <div class="dropdown-container">
+            <button class="drop-down-categories-button link-line-animation" type="button" aria-expanded="false"
+                aria-haspopup="true" aria-controls="categories-menu">
+                Categorias
+                <img src="icons/arrow-down-icon.svg" alt="icone de seta para baixo" class="header-icon-arrow-down">
+            </button>
+    
+            <div id="categories-menu" class="dropdown-menu">
+                <!-- <a class="link-line-animation" routerLink="/categorias/fe">Fé</a>
+                <a class="link-line-animation" routerLink="/categorias/motivacao">Motivação</a>
+                <a class="link-line-animation" routerLink="/categorias/disciplina">Disciplina</a> -->
+
+                @for (category of categories(); track category.id) {
+                    <a
+                        class="link-line-animation"
+                        [routerLink]="'/categorias/' + category.slug"
+                    >
+                        {{ category.name }}
+                    </a>
+                }
+            </div>
+        </div>
+
+        <a class="link-line-animation" routerLink="/sobre">Sobre</a>
+    </nav>
+
+    <nav class="login-sign-in">
+        <a class="link-login" routerLink="/entrar">Entrar</a>
+        <a class="link-sign-in" routerLink="/cadastre-se">Cadastre-se</a>
+    </nav>
+</header>

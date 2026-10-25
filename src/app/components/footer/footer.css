@@ -1,0 +1,85 @@
+Footer {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    background-color: var(--color-background);
+    gap: 0.7rem;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.4rem 0px;
+    gap: 0.7rem;
+}
+
+.footer-icon-linkedin {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: 3px;
+    display: inline-block;
+    object-fit: contain;
+    opacity: 60%;
+    transition: all 0.3s ease;
+}
+
+.footer-icon-linkedin:hover {
+    opacity: 100%;
+}
+
+.footer-icon-github {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: 3px;
+    display: inline-block;
+    object-fit: contain;
+    opacity: 60%;
+    transition: all 0.3s ease;
+}
+
+.footer-icon-github:hover {
+    opacity: 100%;
+}
+
+.footer-icon-bar {
+    height: 1.2rem;
+    display: inline-block;
+    object-fit: contain;
+    opacity: 60%;
+}
+
+.footer-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-info p {
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    color: white;
+    text-align: center;
+    opacity: 70%;
+}
+
+.site-footer-stats {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    right: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+}
+
+.site-footer-stats p {
+    font-size: 0.875rem;
+    color: white;
+    opacity: 80%;
+    margin-bottom: 0;
+}

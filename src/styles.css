@@ -1,1 +1,96 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+:root {
+    /* ---------- Paleta: cores sem significado ---------- */
+    --palette-navy-900: #182647;
+    --palette-navy-800: #1b2e5b;
+    --palette-navy-700: #123875;
+    --palette-blue-950: #0a1128;
+    --palette-blue-800: #123875;
+    --palette-blue-500: #007bff;
+    --palette-blue-400: #69c6ff;
+    --palette-blue-200: #bfdbfe;
+
+    --palette-gold-500: #e7a32e; 
+    --palette-yellow-gold-500: #f4b64c;
+    --palette-honey-100: #ffd58c;
+    --palette-slate-100: #f8fafc;
+
+    /* ---------- Tokens semânticos: o que a cor representa ---------- */
+    --color-background: var(--palette-navy-900);
+
+    --color-text-on-light: var(--palette-navy-700);
+    --color-text-logo: var(--palette-navy-700);
+
+    --color-link: var(--palette-honey-100);
+    --color-link-line: var(--palette-honey-100);
+    --color-link-sign-in: var(--palette-yellow-gold-500);
+
+    --color-button-bg: var(--palette-navy-700);
+    --color-button-bg-hover: var(--palette-navy-800);
+    --color-button-text: var(--palette-honey-100);
+    --color-button-text-hover: var(--palette-honey-100);
+
+    /* Headings */
+    --font-size-h1: clamp(2.25rem, 5vw + 1rem, 3.815rem);    /* ~36px a ~61px */
+    --font-size-h2: clamp(1.875rem, 4vw + 1rem, 2.5rem);   /* ~30px a ~49px */
+    --font-size-h3: clamp(1.5rem, 3vw + 1rem, 2.441rem);     /* ~24px a ~39px */
+    --font-size-h4: clamp(1.25rem, 2vw + 1rem, 1.953rem);    /* ~20px a ~31px */
+
+    /* Textos de Interface e Parágrafos */
+    --font-size-lead: clamp(1.125rem, 0.5vw + 1rem, 1.25rem); /* Textos de destaque / Introduções */
+    --font-size-body: clamp(0.9375rem, 0.2vw + 0.9rem, 1rem); /* Parágrafo padrão (~15px a 16px) */
+    --font-size-small: clamp(0.8125rem, 0.1vw + 0.8rem, 0.875rem); /* Legendas, inputs, rodapés */
+    --font-size-link: clamp(1.1rem, 0.978rem + 0.511vw, 1.3rem); /* Links
+
+    /* Elementos específicos */
+    --font-size-quote: clamp(1.25rem, 1.5vw + 1rem, 1.5rem); /* Blockquotes */
+    --font-size-author: clamp(0.875rem, 0.5vw + 0.75rem, 1.125rem); /* Authors */
+
+    /* Line Heights (Crucial para legibilidade e acessibilidade WCAG) */
+    --line-height-headings: 1.15;
+    --line-height-body: 1.6;
+    --line-height-meta: 1.4;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: "DM Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+body {
+    background: linear-gradient(135deg, var(--palette-blue-400), var(--palette-gold-500));;
+}
+
+h1 {
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-headings);
+    font-weight: 800;
+    letter-spacing: -0.02em; /* Tendência de design para títulos grandes */
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    line-height: var(--line-height-headings);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+/* Parágrafos e Textos */
+p {
+  margin-bottom: 0.6rem;
+}
+
+/* Frases */
+blockquote {
+    font-size: var(--font-size-quote);
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--color-text-on-light);
+    text-align: center;
+}
