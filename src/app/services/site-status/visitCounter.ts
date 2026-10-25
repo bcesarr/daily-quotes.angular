@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { Supabase } from '../supabase/supabase';
 
 const STORAGE_KEY_VISITOR_SEEN = 'frases-do-dia:visitor-seen';
+const STORAGE_KEY_VISIT_COUNTED = 'frases-do-dia:visit-counted';
 
 @Injectable({ providedIn: 'root' })
 export class VisitCounter {
@@ -16,8 +17,21 @@ export class VisitCounter {
   }
 
   private registerVisit(): void {
+    const alreadyCounted = sessionStorage.getItem(STORAGE_KEY_VISIT_COUNTED);
+
+    if (alreadyCounted) {
+      this.supabase.getStats().subscribe({
+        next: (stats) => this.totalVisits.set(stats.total_visits),
+        error: (err) => console.error('Erro ao buscar estatísticas:', err),
+      });
+      return;
+    }
+
     this.supabase.callFunction('increment_total_visits').subscribe({
-      next: (count) => this.totalVisits.set(count),
+      next: (count) => {
+        sessionStorage.setItem(STORAGE_KEY_VISIT_COUNTED, 'true');
+        this.totalVisits.set(count);
+      },
       error: (err) => console.error('Erro ao registrar visita:', err),
     });
   }

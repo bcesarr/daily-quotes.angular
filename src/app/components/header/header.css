@@ -99,9 +99,18 @@ header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.71);
 }
 
-.dropdown-container:hover .dropdown-menu {
+/* Menu aberto por clique, toque ou teclado (controlado pelo componente). */
+.dropdown-menu.dropdown-menu-open {
     visibility: visible;
     opacity: 1;
+}
+
+/* Abrir ao passar o mouse só em dispositivos que têm mouse de verdade. */
+@media (hover: hover) {
+    .dropdown-container:hover .dropdown-menu {
+        visibility: visible;
+        opacity: 1;
+    }
 }
 
 .login-sign-in {

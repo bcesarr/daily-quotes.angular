@@ -21,7 +21,7 @@ export class LoginPage {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Formulário de login enviado com sucesso!', this.loginForm.value);
+      // TODO: integrar com a autenticação (nunca registrar e-mail/senha em console.log).
     }
   }
 }

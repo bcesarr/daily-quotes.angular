@@ -6,16 +6,17 @@
     </div>
 
     <nav class="desktop-menu">
-        <a class="link-line-animation" routerLink="/">Inicio</a>
+        <a class="link-line-animation" routerLink="/">Início</a>
 
-        <div class="dropdown-container">
-            <button class="drop-down-categories-button link-line-animation" type="button" aria-expanded="false"
+        <div class="dropdown-container" (keydown.escape)="closeCategoriesMenu(); dropDownCategoriesButton.focus()">
+            <button #dropDownCategoriesButton class="drop-down-categories-button link-line-animation" type="button"
+                [attr.aria-expanded]="isCategoriesMenuOpen()" (click)="toggleCategoriesMenu()"
                 aria-haspopup="true" aria-controls="categories-menu">
                 Categorias
                 <img src="icons/arrow-down-icon.svg" alt="icone de seta para baixo" class="header-icon-arrow-down">
             </button>
     
-            <div id="categories-menu" class="dropdown-menu">
+            <div id="categories-menu" class="dropdown-menu" [class.dropdown-menu-open]="isCategoriesMenuOpen()">
                 <!-- <a class="link-line-animation" routerLink="/categorias/fe">Fé</a>
                 <a class="link-line-animation" routerLink="/categorias/motivacao">Motivação</a>
                 <a class="link-line-animation" routerLink="/categorias/disciplina">Disciplina</a> -->
@@ -24,6 +25,7 @@
                     <a
                         class="link-line-animation"
                         [routerLink]="'/categorias/' + category.slug"
+                        (click)="closeCategoriesMenu()"
                     >
                         {{ category.name }}
                     </a>

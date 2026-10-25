@@ -19,7 +19,7 @@ export class ResetPasswordPage {
 
   onSubmit() {
     if (this.resetPasswordForm.valid) {
-      console.log('Solicitação de reset de senha enviado com sucesso!', this.resetPasswordForm.value);
+      // TODO: integrar com a recuperação de senha (não registrar dados do usuário em console.log).
     }
   }
 }

@@ -21,7 +21,7 @@ export class SignUpPage {
 
   onSubmit() {
     if (this.signUpForm.valid) {
-      console.log('Formulário de cadastro enviado com sucesso!', this.signUpForm.value);
+      // TODO: integrar com o cadastro (nunca registrar e-mail/senha em console.log).
     }
   }
 }

@@ -52,7 +52,7 @@ export class Home implements OnInit {
         this.quote.set(null);
 
         this.errorMessage.set(
-          'Não foi possível encontrar frases para esta categoria. Tente novamente ou escolha outra categoria'
+          'Não foi possível carregar a frase agora. Tente novamente ou escolha outra categoria.'
         );
         
         this.isLoadingQuote.set(false);
