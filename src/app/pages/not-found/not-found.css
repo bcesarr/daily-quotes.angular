@@ -11,7 +11,7 @@
     justify-content: center;
     align-items: center;
     margin: auto;
-    padding: 2rem;
+    padding: 1.25rem;
     background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border: 1px solid white;
@@ -56,5 +56,12 @@
 .not-found-link-return:hover {
     .not-found-icon-arrow-left {
         transform: translateX(-4px);
+    }
+}
+
+/* Celular grande / deitado (640px+): volta o respiro interno original do cartão */
+@media (min-width: 40rem) {
+    .not-found-container {
+        padding: 2rem;
     }
 }

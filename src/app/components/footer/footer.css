@@ -2,9 +2,11 @@ Footer {
     width: 100%;
     position: relative;
     display: flex;
+    flex-wrap: wrap; /* mobile: as estatísticas descem para uma linha própria */
     justify-content: center;
     align-items: center;
     margin: 0;
+    padding: 0 1rem;
     background-color: var(--color-background);
     gap: 0.7rem;
 }
@@ -61,24 +63,39 @@ Footer {
 
 .footer-info p {
     margin-bottom: 0;
-    font-size: 0.875rem;
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-meta);
     color: white;
     text-align: center;
     opacity: 70%;
 }
 
+/* Mobile-first: as estatísticas ficam DENTRO do rodapé, em linha própria,
+   para não flutuarem por cima do conteúdo em telas pequenas */
 .site-footer-stats {
-    position: absolute;
-    bottom: calc(100% + 0.5rem);
-    right: 2%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: end;
+    align-items: center;
+    padding-bottom: 0.5rem;
+}
+
+/* Tablet (768px+): voltam a flutuar acima do rodapé, no canto direito */
+@media (min-width: 48rem) {
+    .site-footer-stats {
+        position: absolute;
+        bottom: calc(100% + 0.5rem);
+        right: 2%;
+        width: auto;
+        align-items: end;
+        padding-bottom: 0;
+    }
 }
 
 .site-footer-stats p {
-    font-size: 0.875rem;
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-meta);
     color: white;
     opacity: 80%;
     margin-bottom: 0;

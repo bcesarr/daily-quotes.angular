@@ -32,15 +32,53 @@ export class Header implements OnInit {
     this.isCategoriesMenuOpen.set(false);
   }
 
-  // Fecha o menu ao clicar em qualquer lugar fora dele.
-  protected onDocumentClick(event: MouseEvent): void {
-    const target = event.target;
+  // Controla se o menu hambúrguer do celular está aberto.
+  protected readonly isHeaderMenuOpen = signal(false);
 
-    if (target instanceof Element && target.closest('.dropdown-container')) {
+  protected toggleHeaderMenu(): void {
+    this.isHeaderMenuOpen.update((open) => !open);
+  }
+
+  // Fecha o menu hambúrguer e também a lista de categorias que estiver aberta dentro dele.
+  protected closeHeaderMenu(): void {
+    this.isHeaderMenuOpen.set(false);
+    this.closeCategoriesMenu();
+  }
+
+  // Esc com a lista de categorias aberta fecha SÓ a lista (e não o menu inteiro).
+  protected onCategoriesMenuEscape(event: Event, categoriesButton: HTMLButtonElement): void {
+    if (!this.isCategoriesMenuOpen()) {
       return;
     }
 
+    event.stopPropagation();
     this.closeCategoriesMenu();
+    categoriesButton.focus();
+  }
+
+  // Esc com o menu hambúrguer aberto fecha o menu e devolve o foco ao botão hambúrguer.
+  protected onHeaderMenuEscape(headerMenuButton: HTMLButtonElement): void {
+    if (!this.isHeaderMenuOpen()) {
+      return;
+    }
+
+    this.closeHeaderMenu();
+    headerMenuButton.focus();
+  }
+
+  // Clique fora da lista de categorias fecha a lista; clique fora do cabeçalho fecha o menu todo.
+  protected onDocumentClick(event: MouseEvent): void {
+    const target = event.target;
+    const clickedInsideCategories = target instanceof Element && target.closest('.dropdown-container') !== null;
+    const clickedInsideHeader = target instanceof Element && target.closest('header') !== null;
+
+    if (!clickedInsideCategories) {
+      this.closeCategoriesMenu();
+    }
+
+    if (!clickedInsideHeader) {
+      this.closeHeaderMenu();
+    }
   }
 
   ngOnInit(): void {

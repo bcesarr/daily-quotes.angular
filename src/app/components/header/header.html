@@ -1,43 +1,77 @@
-<header>
+<header (keydown.escape)="onHeaderMenuEscape(headerMenuButton)">
     <div class="logo-container">
-        <a routerLink="/">
+        <a routerLink="/" (click)="closeHeaderMenu()">
             <h1>Plinsight</h1>
         </a>
     </div>
 
-    <nav class="desktop-menu">
-        <a class="link-line-animation" routerLink="/">Início</a>
+    <!-- Botão hambúrguer: aparece só no celular. As 3 barras são desenhadas em CSS. -->
+    <button #headerMenuButton class="header-menu-button" type="button"
+        [attr.aria-expanded]="isHeaderMenuOpen()"
+        [attr.aria-label]="isHeaderMenuOpen() ? 'Fechar menu' : 'Abrir menu'"
+        aria-controls="header-menu" (click)="toggleHeaderMenu()">
+        <span class="header-menu-button-bar"></span>
+        <span class="header-menu-button-bar"></span>
+        <span class="header-menu-button-bar"></span>
+    </button>
 
-        <div class="dropdown-container" (keydown.escape)="closeCategoriesMenu(); dropDownCategoriesButton.focus()">
-            <button #dropDownCategoriesButton class="drop-down-categories-button link-line-animation" type="button"
-                [attr.aria-expanded]="isCategoriesMenuOpen()" (click)="toggleCategoriesMenu()"
-                aria-haspopup="true" aria-controls="categories-menu">
-                Categorias
-                <img src="icons/arrow-down-icon.svg" alt="icone de seta para baixo" class="header-icon-arrow-down">
-            </button>
-    
-            <div id="categories-menu" class="dropdown-menu" [class.dropdown-menu-open]="isCategoriesMenuOpen()">
-                <!-- <a class="link-line-animation" routerLink="/categorias/fe">Fé</a>
-                <a class="link-line-animation" routerLink="/categorias/motivacao">Motivação</a>
-                <a class="link-line-animation" routerLink="/categorias/disciplina">Disciplina</a> -->
+    <!-- Fundo desfocado: cobre a tela atrás do menu. Clicar nele fecha o menu. -->
+    <div class="header-menu-backdrop" [class.header-menu-backdrop-open]="isHeaderMenuOpen()"
+        (click)="closeHeaderMenu()" aria-hidden="true"></div>
 
-                @for (category of categories(); track category.id) {
-                    <a
-                        class="link-line-animation"
-                        [routerLink]="'/categorias/' + category.slug"
-                        (click)="closeCategoriesMenu()"
-                    >
-                        {{ category.name }}
-                    </a>
-                }
+    <!-- No celular é o painel do hambúrguer; no desktop é transparente e os itens ficam direto no header. -->
+    <div id="header-menu" class="header-menu" [class.header-menu-open]="isHeaderMenuOpen()">
+        <nav class="desktop-menu">
+            <a class="link-line-animation" routerLink="/" (click)="closeHeaderMenu()">Início</a>
+
+            <div class="dropdown-container" (keydown.escape)="onCategoriesMenuEscape($event, dropDownCategoriesButton)">
+                <button #dropDownCategoriesButton class="drop-down-categories-button link-line-animation" type="button"
+                    [attr.aria-expanded]="isCategoriesMenuOpen()" (click)="toggleCategoriesMenu()"
+                    aria-haspopup="true" aria-controls="categories-menu">
+                    Categorias
+                    <!-- Seta em SVG inline: "stroke=currentColor" faz ela herdar a cor do texto do botão
+                         (dourada no painel do celular, azul no desktop). Decorativa, por isso aria-hidden. -->
+                    <svg class="header-icon-arrow-down" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                        <path d="M4 8L12 16L20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <div id="categories-menu" class="dropdown-menu" [class.dropdown-menu-open]="isCategoriesMenuOpen()">
+                    <!-- <a class="link-line-animation" routerLink="/categorias/fe">Fé</a>
+                    <a class="link-line-animation" routerLink="/categorias/motivacao">Motivação</a>
+                    <a class="link-line-animation" routerLink="/categorias/disciplina">Disciplina</a> -->
+
+                    @for (category of categories(); track category.id) {
+                        <a
+                            class="link-line-animation"
+                            [routerLink]="'/categorias/' + category.slug"
+                            (click)="closeHeaderMenu()"
+                        >
+                            {{ category.name }}
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <a class="link-line-animation" routerLink="/sobre" (click)="closeHeaderMenu()">Sobre</a>
+        </nav>
+
+        <div class="header-menu-footer">
+            <nav class="login-sign-in">
+                <a class="link-login" routerLink="/entrar" (click)="closeHeaderMenu()">Entrar</a>
+                <a class="link-sign-in" routerLink="/cadastre-se" (click)="closeHeaderMenu()">Cadastre-se</a>
+            </nav>
+
+            <!-- Redes sociais: só no painel do celular (no desktop já aparecem no rodapé). -->
+            <div class="header-social-links">
+                <a href="https://www.linkedin.com/in/bcesarr/" aria-label="Linkedin" target="_blank" rel="noopener noreferrer">
+                    <img src="icons/linkedin-icon.svg" alt="linkedin" class="header-icon-linkedin">
+                </a>
+
+                <a href="https://www.github.com/bcesarr" aria-label="Github" target="_blank" rel="noopener noreferrer">
+                    <img src="icons/github-icon.svg" alt="github" class="header-icon-github">
+                </a>
             </div>
         </div>
-
-        <a class="link-line-animation" routerLink="/sobre">Sobre</a>
-    </nav>
-
-    <nav class="login-sign-in">
-        <a class="link-login" routerLink="/entrar">Entrar</a>
-        <a class="link-sign-in" routerLink="/cadastre-se">Cadastre-se</a>
-    </nav>
+    </div>
 </header>

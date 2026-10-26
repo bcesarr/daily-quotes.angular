@@ -31,17 +31,23 @@
     --color-button-text: var(--palette-honey-100);
     --color-button-text-hover: var(--palette-honey-100);
 
+    /* ---------- Escala tipográfica (única para o site todo) ----------
+       Cada tamanho é "fluido": cresce suavemente entre o celular (360px) e 1440px,
+       e depois o html aumenta o tamanho-base em telas grandes (veja "html" mais abaixo).
+       Regra do projeto: nenhum arquivo de CSS usa font-size fixo; todos usam estes tokens. */
+
     /* Headings */
-    --font-size-h1: clamp(2.25rem, 5vw + 1rem, 3.815rem);    /* ~36px a ~61px */
-    --font-size-h2: clamp(1.875rem, 4vw + 1rem, 2.5rem);   /* ~30px a ~49px */
-    --font-size-h3: clamp(1.5rem, 3vw + 1rem, 2.441rem);     /* ~24px a ~39px */
-    --font-size-h4: clamp(1.25rem, 2vw + 1rem, 1.953rem);    /* ~20px a ~31px */
+    --font-size-h1: clamp(2rem, 1.396rem + 2.685vw, 3.815rem);       /* 32px -> 61px */
+    --font-size-h2: clamp(1.625rem, 1.333rem + 1.296vw, 2.5rem);     /* 26px -> 40px */
+    --font-size-h3: clamp(1.375rem, 1.188rem + 0.833vw, 1.953rem);   /* 22px -> 31px */
+    --font-size-h4: clamp(1.1875rem, 1.063rem + 0.556vw, 1.563rem);  /* 19px -> 25px */
+    --font-size-logo: clamp(1.5rem, 1.333rem + 0.741vw, 2rem);       /* 24px -> 32px (logo do cabeçalho) */
 
     /* Textos de Interface e Parágrafos */
     --font-size-lead: clamp(1.125rem, 0.5vw + 1rem, 1.25rem); /* Textos de destaque / Introduções */
     --font-size-body: clamp(0.9375rem, 0.2vw + 0.9rem, 1rem); /* Parágrafo padrão (~15px a 16px) */
-    --font-size-small: clamp(0.8125rem, 0.1vw + 0.8rem, 0.875rem); /* Legendas, inputs, rodapés */
-    --font-size-link: clamp(1.1rem, 0.978rem + 0.511vw, 1.3rem); /* Links
+    --font-size-small: clamp(0.8125rem, 0.1vw + 0.8rem, 0.875rem); /* Legendas, labels, rodapé */
+    --font-size-link: clamp(1rem, 0.958rem + 0.185vw, 1.125rem); /* Links e menu: 16px -> 18px */
 
     /* Elementos específicos */
     --font-size-quote: clamp(1.25rem, 1.5vw + 1rem, 1.5rem); /* Blockquotes */
@@ -51,6 +57,11 @@
     --line-height-headings: 1.15;
     --line-height-body: 1.6;
     --line-height-meta: 1.4;
+
+    /* Efeitos e animações (menu do celular) */
+    --blur-overlay: 4px;                          /* desfoque do fundo atrás do menu (o dos cartões é 10px) */
+    --duration-menu: 0.3s;                        /* rápido, mas sem "cortar" a animação */
+    --ease-menu: cubic-bezier(0.4, 0, 0.2, 1);    /* começa e termina suave */
 }
 
 * {
@@ -63,7 +74,52 @@
     font-style: normal;
 }
 
+/*
+  MOBILE-FIRST
+  Os estilos "soltos" (sem @media) valem para celular. As @media com min-width
+  só ACRESCENTAM ajustes quando a tela é maior. Breakpoints padrão do projeto
+  (em rem, para respeitar o zoom de fonte do usuário):
+    40rem =  640px -> celulares grandes / celular deitado
+    48rem =  768px -> tablets
+    64rem = 1024px -> desktop
+  Obs.: variáveis CSS não funcionam dentro de @media, por isso repetimos os valores.
+*/
+
+html {
+    /* Impede o iOS de aumentar o texto sozinho quando o celular é girado */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* 100% = respeita o tamanho de fonte que o usuário escolheu no navegador (normalmente 16px) */
+    font-size: 100%;
+}
+
+/* TELAS GRANDES: em vez de mexer em cada fonte, aumentamos o tamanho-base (1rem).
+   Como o site inteiro usa rem (fontes, espaços, cartões, ícones), tudo cresce junto e
+   proporcional, sem ficar pequeno e perdido em monitores grandes.
+   Obs.: em @media, "rem" sempre vale 16px, então os pontos abaixo são px reais de tela. */
+@media (min-width: 90rem) {  /* 1440px (notebook grande / desktop) */
+    html { font-size: 112.5%; }  /* 1rem = 18px */
+}
+
+@media (min-width: 120rem) { /* 1920px (Full HD) */
+    html { font-size: 125%; }    /* 1rem = 20px */
+}
+
+@media (min-width: 160rem) { /* 2560px (QHD / 2K) */
+    html { font-size: 150%; }    /* 1rem = 24px */
+}
+
+@media (min-width: 240rem) { /* 3840px (4K) */
+    html { font-size: 200%; }    /* 1rem = 32px */
+}
+
+img {
+    /* Imagem nunca passa da largura do pai (evita rolagem horizontal) */
+    max-width: 100%;
+}
+
 body {
+    font-size: var(--font-size-body); /* tamanho padrão de todo texto que não define o seu próprio */
     background: linear-gradient(135deg, var(--palette-blue-400), var(--palette-gold-500));;
 }
 
@@ -84,6 +140,7 @@ h2 {
 /* Parágrafos e Textos */
 p {
   margin-bottom: 0.6rem;
+  line-height: var(--line-height-body);
 }
 
 /* Frases */

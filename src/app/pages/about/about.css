@@ -4,16 +4,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 3.5rem;
+    padding: 0; /* no celular, o respiro vem do .app-main (era 3.5rem em todas as telas) */
 }
 
 .about-container {
-    width: 33rem;
+    width: 100%; /* era 33rem fixo: estourava a tela do celular */
+    max-width: 33rem; /* em telas grandes continua com os mesmos 33rem */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 1.5rem;
+    padding: 0.5rem; /* o texto já tem 1rem próprio; evita acumular margens no celular */
     background-color: rgba(255, 255,  255, 0.1);
     border: 1px solid white;
     border-radius: 1rem;
@@ -34,7 +35,7 @@
 .about-text {
     color: var(--palette-navy-700);
     padding: 0px 1rem;
-    text-align: justify;
+    text-align: left; /* texto justificado em coluna estreita cria buracos entre palavras */
 }
 
 .about-text-quote {
@@ -42,4 +43,22 @@
     color: var(--palette-navy-700);
     padding: 0px 1rem;
     font-style: italic;
+}
+
+/* Celular grande / deitado (640px+): volta o respiro interno e o texto justificado */
+@media (min-width: 40rem) {
+    .about-container {
+        padding: 1.5rem;
+    }
+
+    .about-text {
+        text-align: justify;
+    }
+}
+
+/* Tablet (768px+): volta o espaçamento amplo ao redor do cartão */
+@media (min-width: 48rem) {
+    .section-about {
+        padding: 3.5rem;
+    }
 }

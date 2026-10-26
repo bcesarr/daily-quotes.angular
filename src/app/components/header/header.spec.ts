@@ -67,4 +67,83 @@ describe('Header', () => {
 
     expect(button.getAttribute('aria-expanded')).toBe('false');
   });
+
+  it('should open and close the hamburger menu with its button', async () => {
+    const element = fixture.nativeElement as HTMLElement;
+    const menuButton = element.querySelector('.header-menu-button') as HTMLButtonElement;
+    const menu = element.querySelector('#header-menu') as HTMLElement;
+
+    expect(menuButton.getAttribute('aria-expanded')).toBe('false');
+    expect(menuButton.getAttribute('aria-label')).toBe('Abrir menu');
+    expect(menu.classList.contains('header-menu-open')).toBe(false);
+
+    menuButton.click();
+    await fixture.whenStable();
+    expect(menuButton.getAttribute('aria-expanded')).toBe('true');
+    expect(menuButton.getAttribute('aria-label')).toBe('Fechar menu');
+    expect(menu.classList.contains('header-menu-open')).toBe(true);
+
+    menuButton.click();
+    await fixture.whenStable();
+    expect(menuButton.getAttribute('aria-expanded')).toBe('false');
+    expect(menu.classList.contains('header-menu-open')).toBe(false);
+  });
+
+  it('should close the hamburger menu when Escape is pressed', async () => {
+    const element = fixture.nativeElement as HTMLElement;
+    const menuButton = element.querySelector('.header-menu-button') as HTMLButtonElement;
+
+    menuButton.click();
+    await fixture.whenStable();
+
+    menuButton.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await fixture.whenStable();
+
+    expect(menuButton.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('should close only the categories list when Escape is pressed with both menus open', async () => {
+    const element = fixture.nativeElement as HTMLElement;
+    const menuButton = element.querySelector('.header-menu-button') as HTMLButtonElement;
+    const categoriesButton = element.querySelector('.drop-down-categories-button') as HTMLButtonElement;
+
+    menuButton.click();
+    categoriesButton.click();
+    await fixture.whenStable();
+
+    categoriesButton.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await fixture.whenStable();
+
+    expect(categoriesButton.getAttribute('aria-expanded')).toBe('false');
+    expect(menuButton.getAttribute('aria-expanded')).toBe('true');
+  });
+
+  it('should close the hamburger menu when clicking on the blurred background', async () => {
+    const element = fixture.nativeElement as HTMLElement;
+    const menuButton = element.querySelector('.header-menu-button') as HTMLButtonElement;
+    const backdrop = element.querySelector('.header-menu-backdrop') as HTMLElement;
+
+    menuButton.click();
+    await fixture.whenStable();
+    expect(backdrop.classList.contains('header-menu-backdrop-open')).toBe(true);
+
+    backdrop.click();
+    await fixture.whenStable();
+
+    expect(menuButton.getAttribute('aria-expanded')).toBe('false');
+    expect(backdrop.classList.contains('header-menu-backdrop-open')).toBe(false);
+  });
+
+  it('should close the hamburger menu when clicking outside of the header', async () => {
+    const element = fixture.nativeElement as HTMLElement;
+    const menuButton = element.querySelector('.header-menu-button') as HTMLButtonElement;
+
+    menuButton.click();
+    await fixture.whenStable();
+
+    document.body.click();
+    await fixture.whenStable();
+
+    expect(menuButton.getAttribute('aria-expanded')).toBe('false');
+  });
 });
