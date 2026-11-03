@@ -1,75 +1,175 @@
-# FrasesDoDia
+# Frases do Dia (Plinsight)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.7.
+Site de frases motivacionais. A cada clique em **Nova Frase** aparece uma frase aleatória, sem repetir as que a pessoa já viu, e as frases podem ser filtradas por categoria (Fé, Motivação, Disciplina e outras).
 
-## Development server
+Projeto pessoal e de portfólio, em desenvolvimento. Feito com Angular, TypeScript e CSS puro, com dados no Supabase.
 
-To start a local development server, run:
+## Sumário
 
-```bash
-ng serve
-```
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias](#tecnologias)
+- [Como rodar](#como-rodar)
+- [Configuração](#configuração)
+- [Scripts](#scripts)
+- [Estrutura do projeto](#estrutura-do-projeto)
+- [Backend (Supabase)](#backend-supabase)
+- [Estilização](#estilização)
+- [Acessibilidade](#acessibilidade)
+- [Segurança](#segurança)
+- [Testes](#testes)
+- [Build e deploy](#build-e-deploy)
+- [Autor](#autor)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Funcionalidades
 
-## Code scaffolding
+- Frase aleatória a cada clique, sem repetir as já exibidas até acabarem (fila por categoria, com novo ciclo quando todas foram vistas).
+- Categorias carregadas do banco (`/categorias/:slug`).
+- Contador de acessos e de visitantes no rodapé.
+- Layout responsivo, mobile-first, com menu hambúrguer no celular e cabeçalho que fica fixo ao rolar a página.
+- Páginas: Início, Sobre e 404. Entrar, Cadastre-se e Recuperar senha ainda não estão disponíveis.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Tecnologias
 
-```bash
-ng generate component component-name
-```
+| Área | Tecnologia |
+| --- | --- |
+| Framework | Angular 22 (componentes standalone, signals, novo controle de fluxo `@if`/`@for`) |
+| Linguagem | TypeScript 6, com `strict` e `strictTemplates` ativos |
+| Estilos | CSS puro (sem Tailwind ou outro framework), com variáveis CSS |
+| Dados | Supabase (PostgREST), acessado com `HttpClient` |
+| Testes | Vitest + jsdom, pelo runner do Angular (`ng test`) |
+| Formatação | Prettier |
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Como rodar
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Pré-requisitos: **Node.js 24** e **npm 12** (versões usadas no desenvolvimento; o campo `packageManager` do `package.json` indica o npm).
 
 ```bash
-ng e2e
+npm install
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+O site abre em `http://localhost:4200/` e recarrega sozinho a cada alteração.
 
-## Additional Resources
+## Configuração
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Os dados do Supabase ficam em `src/environments/`:
 
+| Arquivo | Quando é usado |
+| --- | --- |
+| `environment.development.ts` | `npm start` e `npm run watch` |
+| `environment.ts` | `npm run build` (produção) |
 
-## Fundo do site (foto do amanhecer, folhas e vento)
+Cada arquivo tem:
 
-Tudo é desenhado pelo componente `src/app/components/sky-background/`, que fica fixo atrás de todo o site (montado em `app.html`, antes do cabeçalho):
+```ts
+export const environment = {
+  production: false,                       // true em environment.ts
+  supabaseUrl: 'https://SEU-PROJETO.supabase.co',
+  supabaseKey: 'sb_publishable_...',       // chave pública (publishable/anon)
+};
+```
 
-- **`public/images/sunrise.jpg`**: a foto do céu ao nascer do sol (servida como `images/sunrise.jpg`).
-- **`sky-background.css`**: todo o visual do fundo.
-  - `.sky-background` e `.sky-wash`: a foto cobrindo a tela e o véu claro por cima.
-  - `.leaves`, `.leaf` e os keyframes `wind` e `flutter`: as 12 folhas verdes que cruzam a tela balançando.
-  - `.wind`, `.gust`, `.swirl` e o keyframe `gust`: as 4 rajadas e os 2 redemoinhos de vento.
-  - `@media (prefers-reduced-motion: reduce)`: desliga as animações para quem prefere menos movimento.
-- **`sky-background.html`**: monta a foto, o véu, os 12 `<span class="leaf">` e os 6 elementos de vento (4 `gust` + 2 `swirl`).
-- **`src/styles.css`**: os tokens de cor do fundo (`--sky-fallback`, `--sky-wash`, `--leaf`, `--leaf-light`, `--wind-line`, `--wind-swirl`).
+> Use **somente** a chave pública (publishable/anon). Nunca coloque a `service_role` no front-end: tudo que está em `environment*.ts` vai para o navegador.
 
-O tamanho, a altura e a velocidade de cada folha e de cada vento vêm da posição dele (`:nth-child`) no CSS. Por isso, se mudar a quantidade de folhas ou de elementos de vento, atualize também o CSS.
+## Scripts
+
+| Comando | O que faz |
+| --- | --- |
+| `npm start` | Servidor de desenvolvimento (`ng serve`) |
+| `npm run build` | Build de produção em `dist/frases-do-dia/browser/` |
+| `npm run watch` | Build de desenvolvimento que recompila ao salvar |
+| `npm test` | Testes em modo observação |
+| `npx ng test --watch=false` | Roda os testes uma vez e termina |
+
+## Estrutura do projeto
+
+```text
+public/
+  icons/                       ícones SVG (redes sociais, setas)
+  images/sunrise.jpg           foto do fundo
+src/
+  environments/                configuração por ambiente
+  styles.css                   tokens (cores, tipografia, animações) e estilos globais
+  app/
+    app.config.ts              providers (roteador, HttpClient)
+    app.routes.ts              rotas
+    components/
+      header/                  cabeçalho, menu hambúrguer e dropdown de categorias
+      footer/                  rodapé e estatísticas de acesso
+      sky-background/          fundo animado
+    pages/                     home, about, login-page, sign-up-page, reset-password-page, not-found
+    services/
+      supabase/                acesso à API do Supabase (modelos Quote e Category)
+      category/                lista de categorias
+      quote-queue/             fila de frases sem repetição
+      site-status/             contador de acessos e visitantes
+```
+
+Cada componente e página tem seu `.ts`, `.html`, `.css` e `.spec.ts`, e os estilos são isolados por componente.
+
+## Backend (Supabase)
+
+O SQL do banco não está versionado neste repositório; ele foi aplicado direto no painel do Supabase. O front-end depende deste contrato:
+
+| Item | Descrição |
+| --- | --- |
+| `categories` | `id`, `name`, `slug`, `display_order`, `active`. Só as ativas são listadas. |
+| `quotes` | `id`, `category_id`, `text`, `author_name`, `active`. |
+| `site_stats` | Linha única (`id = 1`) com `total_visits` e `unique_visitors`. |
+| RPC `get_random_quotes(p_category_slug, p_excluded_ids, p_limit)` | Frases ativas aleatórias, sem as já exibidas, com limite máximo de 20. |
+| RPC `increment_total_visits()` | Soma 1 aos acessos e devolve o novo total. |
+| RPC `increment_unique_visitors()` | Soma 1 aos visitantes e devolve o novo total. |
+
+Regras de segurança aplicadas no banco:
+
+- RLS ligado nas três tabelas, com políticas apenas de leitura (`SELECT`): categorias e frases ativas, e estatísticas.
+- Nenhuma política de escrita: só as funções `increment_*` alteram `site_stats`.
+- As funções `increment_*` são `SECURITY DEFINER` com `search_path` vazio e nomes de tabela qualificados (`public.site_stats`).
+
+**Como contamos:** a visita é registrada uma vez por sessão do navegador (`sessionStorage`) e o visitante uma vez por navegador (`localStorage`). Os números são aproximados e não à prova de manipulação.
+
+## Estilização
+
+CSS puro, **mobile-first**: os estilos sem `@media` valem para celular e as `@media (min-width: ...)` só acrescentam ajustes.
+
+- **Breakpoints:** `40rem` (640px), `48rem` (768px) e `64rem` (1024px), em `rem`.
+- **Telas grandes:** o tamanho-base do `html` aumenta em 1440px, 1920px, 2560px e 3840px, e como tudo usa `rem`, a interface cresce proporcionalmente.
+- **Tipografia:** escala fluida única em tokens (`--font-size-h1`, `--font-size-body`, `--font-size-link` e outros). Nenhum CSS usa `font-size` fixo.
+- **Tokens:** paleta, cores semânticas, tipografia e animações do menu ficam no `:root` do `src/styles.css`.
+- **Fonte:** DM Sans, pelo Google Fonts.
+
+## Acessibilidade
+
+- Menu e dropdown acessíveis por teclado, com `aria-expanded` dinâmico; `Esc` fecha e clicar fora também.
+- Áreas de toque de cerca de 44px nos itens do menu.
+- Fundo animado marcado como decorativo (`aria-hidden`) e desligado para quem prefere menos movimento.
+- Páginas em `pt-BR` (`<html lang="pt-BR">`).
+
+## Segurança
+
+- Só a chave pública do Supabase vai para o navegador; as regras reais de proteção estão no RLS do banco (veja [Backend](#backend-supabase)).
+- Os dados do formulário não são registrados no console.
+- Dependências: rode `npm audit` periodicamente. Avisos em ferramentas de desenvolvimento (Angular CLI, Vite) não vão para o site publicado; confira com `npm audit --omit=dev`.
+
+## Testes
+
+```bash
+npx ng test --watch=false
+```
+
+Cobrem os serviços (fila de frases, categorias, Supabase e contador), o cabeçalho (menu, categorias e cabeçalho fixo), o rodapé e o fundo. O Supabase é substituído por simulações, então nenhum teste faz requisição real.
+
+## Build e deploy
+
+```bash
+npm run build
+```
+
+Os arquivos estáticos ficam em `dist/frases-do-dia/browser/`. Para publicar em qualquer hospedagem estática:
+
+- Configure o **fallback para `index.html`** em todas as rotas. Sem isso, abrir `/sobre` direto dá erro 404.
+- Configure **cabeçalhos de segurança** na hospedagem (ainda não configurados): `Content-Security-Policy` (liberando o domínio do Supabase e do Google Fonts), `X-Content-Type-Options: nosniff`, `Referrer-Policy` e `frame-ancestors`.
+
+## Autor
+
+**Bruno Cesar** · [LinkedIn](https://www.linkedin.com/in/bcesarr/) · [GitHub](https://www.github.com/bcesarr)

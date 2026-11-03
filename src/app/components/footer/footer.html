@@ -18,7 +18,7 @@
     @if (visitCounter.totalVisits() !== null && visitCounter.visitorCount() !== null) {
         <div class="site-footer-stats">
             <p>
-                {{ visitCounter.visitorCount() }} Pessoas passaram por aqui
+                {{ visitCounter.visitorCount() }} {{ visitCounter.visitorCount() === 1 ? 'Pessoa passou' : 'Pessoas passaram' }} por aqui
             </p>
             <p>
                 Total de: {{ visitCounter.totalVisits() }}
