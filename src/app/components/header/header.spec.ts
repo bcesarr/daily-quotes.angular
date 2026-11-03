@@ -24,6 +24,25 @@ describe('Header', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should mark the header as fixed only while the page is scrolled', async () => {
+    const host = fixture.nativeElement as HTMLElement;
+    // O jsdom não rola de verdade, então simulamos a posição de rolagem da janela
+    const setScrollY = (value: number) =>
+      Object.defineProperty(window, 'scrollY', { configurable: true, get: () => value });
+
+    expect(host.classList.contains('header-fixed')).toBe(false);
+
+    setScrollY(120);
+    window.dispatchEvent(new Event('scroll'));
+    await fixture.whenStable();
+    expect(host.classList.contains('header-fixed')).toBe(true);
+
+    setScrollY(0);
+    window.dispatchEvent(new Event('scroll'));
+    await fixture.whenStable();
+    expect(host.classList.contains('header-fixed')).toBe(false);
+  });
+
   it('should open and close the categories menu with the button', async () => {
     const element = fixture.nativeElement as HTMLElement;
     const button = element.querySelector('.drop-down-categories-button') as HTMLButtonElement;

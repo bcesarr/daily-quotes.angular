@@ -1,0 +1,15 @@
+<!-- Camadas de trás para frente: foto do amanhecer, véu claro, folhas e vento -->
+<img class="sky-background" src="images/sunrise.jpg" alt="" width="1920" height="1280" fetchpriority="high">
+<div class="sky-wash"></div>
+
+<div class="leaves">
+    @for (leaf of leaves; track leaf) {
+        <span class="leaf"></span>
+    }
+</div>
+
+<div class="wind">
+    @for (item of windElements; track item) {
+        <span [class]="item < 4 ? 'gust' : 'swirl'"></span>
+    }
+</div>

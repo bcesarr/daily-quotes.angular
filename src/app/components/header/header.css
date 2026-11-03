@@ -1,3 +1,14 @@
+/* O host (<app-header>) é quem fica "grudado" no topo: dentro dele o <header> é o único filho, e o
+   "sticky" só funciona se o pai for tão alto quanto a página (aqui o pai é o <app-root>).
+   Diferente de "position: fixed", o sticky MANTÉM o espaço do cabeçalho no fluxo da página,
+   então nada fica escondido atrás dele. O z-index põe o cabeçalho acima do conteúdo que rola. */
+:host {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
 /* Mobile-first: logo à esquerda e botão hambúrguer à direita */
 header {
     position: relative; /* âncora do painel do menu no celular */
@@ -7,6 +18,36 @@ header {
     align-items: center;
     padding: 1rem;
     padding-top: 1.25rem;
+    /* A borda já existe (transparente) para o cabeçalho não "pular" 1px quando ela aparecer */
+    border-bottom: 1px solid transparent;
+    transition:
+        border-color var(--duration-menu) var(--ease-menu),
+        box-shadow var(--duration-menu) var(--ease-menu);
+}
+
+/* Fundo de vidro do cabeçalho fixo. Fica num pseudo-elemento de propósito: "backdrop-filter" no
+   próprio <header> faria o fundo desfocado do menu do celular (position: fixed) ficar preso
+   dentro do cabeçalho em vez de cobrir a tela inteira. */
+header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity var(--duration-menu) var(--ease-menu);
+}
+
+/* Página rolada (classe .header-fixed no host): aparecem o fundo, a borda fininha (mesma cor da
+   borda do "Cadastre-se") e uma sombra bem suave embaixo. No topo da página tudo some. */
+:host(.header-fixed) header {
+    border-bottom-color: var(--color-border-light);
+    box-shadow: 0 8px 20px -10px rgba(24, 38, 71, 0.25);
+}
+
+:host(.header-fixed) header::before {
+    opacity: 1;
 }
 
 /* Tablet (768px+): espaçamento lateral maior */
@@ -248,7 +289,7 @@ header {
     margin-top: 0.75rem;
     padding: 0.5rem 0.75rem;
     /* Mesma cor da borda do "Cadastre-se", porém mais fina (1px contra 1.5px) */
-    border: 1px solid rgba(255, 255, 255, 0.70);
+    border: 1px solid var(--color-border-light);
     border-radius: 0.5rem;
     /* Altura máxima = 3 categorias. Da 4ª em diante aparece a barra de rolagem.
        Conta: 3 itens (linha 1.3em + padding 0.6rem + borda 1px) + 2 espaços de 0.5rem
@@ -404,7 +445,7 @@ header {
     color: var(--header-link-color);
     font-weight: 500;
     /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); */
-    border: 1.5px solid rgba(255, 255, 255, 0.70);
+    border: 1.5px solid var(--color-border-light);
     border-radius: 0.7rem;
     transition: all 0.5s ease;
 }

@@ -13,6 +13,8 @@ import { CategoryService } from '../../services/category/category';
   styleUrl: './header.css',
   host: {
     '(document:click)': 'onDocumentClick($event)',
+    '(window:scroll)': 'onWindowScroll()',
+    '[class.header-fixed]': 'isHeaderFixed()',
   },
 })
 export class Header implements OnInit {
@@ -30,6 +32,15 @@ export class Header implements OnInit {
 
   protected closeCategoriesMenu(): void {
     this.isCategoriesMenuOpen.set(false);
+  }
+
+  // Fica true enquanto a página está rolada (cabeçalho "grudado" no topo). O CSS usa isso para
+  // mostrar o fundo, a borda e a sombra. O signal só avisa a tela quando o valor MUDA, então
+  // rolar a página não força redesenhos a cada pixel.
+  protected readonly isHeaderFixed = signal(false);
+
+  protected onWindowScroll(): void {
+    this.isHeaderFixed.set(window.scrollY > 0);
   }
 
   // Controla se o menu hambúrguer do celular está aberto.
@@ -82,6 +93,9 @@ export class Header implements OnInit {
   }
 
   ngOnInit(): void {
+    // A página pode ser aberta já rolada (ex.: ao recarregar), então checa logo de início
+    this.onWindowScroll();
+
     this.categoryService
       .getCategories()
       .pipe(takeUntilDestroyed(this.destroyRef))

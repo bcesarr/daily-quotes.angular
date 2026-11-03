@@ -100,3 +100,12 @@ Footer {
     opacity: 80%;
     margin-bottom: 0;
 }
+
+/* Tablet (768px+): as estatísticas flutuam sobre o céu claro (e não mais sobre o rodapé escuro),
+   então o texto branco sumiria. Passam para o azul-escuro do site. */
+@media (min-width: 48rem) {
+    .site-footer-stats p {
+        color: var(--color-text-on-light);
+        opacity: 100%;
+    }
+}

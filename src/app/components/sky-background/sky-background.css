@@ -1,0 +1,141 @@
+/* Fundo fixo atrás de TODO o site: ocupa a tela inteira, fica por baixo do conteúdo (z-index -1)
+   e não recebe cliques (pointer-events: none). As camadas aparecem na ordem do HTML:
+   foto, véu claro, folhas e vento. */
+:host {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    display: block;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* ---------- Foto do amanhecer + véu claro ---------- */
+.sky-background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* preenche a tela inteira sem deformar a foto */
+}
+
+.sky-wash {
+    position: absolute;
+    inset: 0;
+    background: var(--sky-wash);
+}
+
+/* ---------- Folhas: 12 folhas verdes cruzam a tela balançando ---------- */
+.leaves,
+.wind {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Duas animações juntas: "wind" leva a folha pela tela (e gira) e "flutter" faz ela subir e descer.
+   Cada folha abaixo muda a altura (top), o tamanho, a velocidade (duration) e o ponto de partida (delay). */
+.leaf {
+    position: absolute;
+    left: -8%;
+    width: 17px;
+    height: 9px;
+    background: var(--leaf);
+    border-radius: 0 85% 0 85%;
+    opacity: 0.55;
+    animation: wind 30s linear infinite, flutter 4s ease-in-out infinite;
+}
+
+/* nervura da folha */
+.leaf::after {
+    content: '';
+    position: absolute;
+    top: 48%;
+    left: 10%;
+    width: 85%;
+    height: 1px;
+    background: var(--leaf-light);
+    transform: rotate(24deg);
+}
+
+.leaf:nth-child(1) { top: 17%; animation-delay: -5s, -1s; }
+.leaf:nth-child(2) { top: 74%; animation-delay: -23s, -3s; animation-duration: 36s, 5.2s; width: 22px; height: 11px; }
+.leaf:nth-child(3) { top: 44%; animation-delay: -14s, -2s; animation-duration: 42s, 4.4s; width: 12px; height: 7px; }
+.leaf:nth-child(4) { top: 85%; animation-delay: -11s, -4s; animation-duration: 32s, 5.8s; }
+.leaf:nth-child(5) { top: 29%; animation-delay: -29s, -1.5s; animation-duration: 38s, 3.8s; width: 13px; height: 8px; }
+.leaf:nth-child(6) { top: 60%; animation-delay: -2s, -2.5s; animation-duration: 45s, 6.2s; }
+.leaf:nth-child(7) { top: 9%; animation-delay: -20s, -3.5s; animation-duration: 40s, 4.8s; width: 11px; height: 6px; }
+.leaf:nth-child(8) { top: 68%; animation-delay: -8s, -0.8s; animation-duration: 34s, 4.2s; width: 19px; height: 10px; opacity: 0.62; }
+.leaf:nth-child(9) { top: 38%; animation-delay: -26s, -2.2s; animation-duration: 47s, 5.6s; width: 10px; height: 6px; opacity: 0.4; filter: blur(0.4px); }
+.leaf:nth-child(10) { top: 78%; animation-delay: -17s, -1.8s; animation-duration: 29s, 3.6s; width: 24px; height: 12px; opacity: 0.48; }
+.leaf:nth-child(11) { top: 52%; animation-delay: -33s, -4.5s; animation-duration: 44s, 5.4s; width: 14px; height: 8px; opacity: 0.66; }
+.leaf:nth-child(12) { top: 22%; animation-delay: -12s, -2.8s; animation-duration: 37s, 4.6s; width: 9px; height: 5px; opacity: 0.38; filter: blur(0.5px); }
+
+@keyframes wind {
+    0% { transform: translate(0, 0) rotate(-30deg); }
+    25% { transform: translate(30vw, 25px) rotate(35deg); }
+    50% { transform: translate(60vw, -20px) rotate(100deg); }
+    75% { transform: translate(90vw, 20px) rotate(155deg); }
+    100% { transform: translate(120vw, -5px) rotate(220deg); }
+}
+
+@keyframes flutter {
+    0%, 100% { translate: 0 0; }
+    35% { translate: 0 -13px; }
+    70% { translate: 0 9px; }
+}
+
+/* ---------- Vento: 4 rajadas (riscos) e 2 redemoinhos (arcos) ---------- */
+.gust {
+    position: absolute;
+    left: -24%;
+    width: 260px;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, var(--wind-line), transparent);
+    filter: blur(1.2px);
+    opacity: 0;
+    animation: gust 14s ease-in-out infinite;
+}
+
+.swirl {
+    position: absolute;
+    left: -14%;
+    width: 92px;
+    height: 34px;
+    border-top: 1.5px solid var(--wind-swirl);
+    border-radius: 50%;
+    filter: blur(0.6px);
+    opacity: 0;
+    animation: gust 16s ease-in-out infinite;
+}
+
+/* Os números são a posição dentro de ".wind": 1 a 4 são rajadas e 5 e 6 são redemoinhos */
+.gust:nth-child(1) { top: 24%; }
+.gust:nth-child(2) { top: 57%; width: 340px; animation-delay: -5s; animation-duration: 17s; }
+.gust:nth-child(3) { top: 78%; width: 190px; animation-delay: -9s; animation-duration: 12s; }
+.gust:nth-child(4) { top: 41%; width: 280px; animation-delay: -13s; animation-duration: 19s; }
+.swirl:nth-child(5) { top: 33%; animation-delay: -7s; animation-duration: 15s; }
+.swirl:nth-child(6) { top: 64%; animation-delay: -11s; animation-duration: 20s; }
+
+@keyframes gust {
+    0% { transform: translate3d(0, 0, 0) scaleX(0.5) rotate(-1.5deg); opacity: 0; }
+    12% { opacity: 0.75; }
+    55% { opacity: 0.45; }
+    100% { transform: translate3d(135vw, -40px, 0) scaleX(1.5) rotate(1.5deg); opacity: 0; }
+}
+
+/* Quem pediu "reduzir movimento" no sistema vê tudo parado: as folhas ficam paradas e o vento some. */
+@media (prefers-reduced-motion: reduce) {
+    .leaf {
+        animation: none;
+        left: 20%;
+    }
+
+    .gust,
+    .swirl {
+        animation: none;
+        opacity: 0;
+    }
+}

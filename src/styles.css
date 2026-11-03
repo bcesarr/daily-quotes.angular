@@ -16,6 +16,17 @@
     --palette-honey-100: #ffd58c;
     --palette-slate-100: #f8fafc;
 
+    /* ---------- Fundo do site: foto do amanhecer, folhas e vento ---------- */
+    --sky-fallback: oklch(0.96 0.012 230);        /* azul clarinho mostrado enquanto a foto carrega */
+    --sky-wash: oklch(0.99 0.006 100 / 15%);      /* véu claro por cima da foto */
+    --leaf: oklch(0.48 0.12 137);                 /* verde das folhas */
+    --leaf-light: oklch(0.59 0.1 134);            /* nervura da folha */
+    --wind-line: oklch(1 0 0 / 60%);              /* rajadas de vento */
+    --wind-swirl: oklch(1 0 0 / 45%);             /* redemoinhos */
+
+    /* Borda clara usada nos botões e no cabeçalho fixo */
+    --color-border-light: rgba(255, 255, 255, 0.70);
+
     /* ---------- Tokens semânticos: o que a cor representa ---------- */
     --color-background: var(--palette-navy-900);
 
@@ -91,6 +102,8 @@ html {
     text-size-adjust: 100%;
     /* 100% = respeita o tamanho de fonte que o usuário escolheu no navegador (normalmente 16px) */
     font-size: 100%;
+    /* Com o cabeçalho fixo, links internos e o foco do teclado não ficam escondidos atrás dele */
+    scroll-padding-top: 6rem;
 }
 
 /* TELAS GRANDES: em vez de mexer em cada fonte, aumentamos o tamanho-base (1rem).
@@ -120,7 +133,11 @@ img {
 
 body {
     font-size: var(--font-size-body); /* tamanho padrão de todo texto que não define o seu próprio */
-    background: linear-gradient(135deg, var(--palette-blue-400), var(--palette-gold-500));;
+    /* A foto do amanhecer, as folhas e o vento são desenhados pelo componente <app-sky-background>.
+       Aqui fica só a cor de segurança, caso a foto ainda não tenha carregado. */
+    background-color: var(--sky-fallback);
+    /* Fundo anterior, guardado para referência:
+       background: linear-gradient(135deg, var(--palette-blue-400), var(--palette-gold-500)); */
 }
 
 h1 {

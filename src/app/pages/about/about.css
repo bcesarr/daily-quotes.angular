@@ -28,7 +28,8 @@
 }
 
 .about-span {
-    color: var(--palette-honey-100);
+    /* ouro em vez de mel: o mel (#ffd58c) quase some sobre o céu claro do fundo */
+    color: var(--palette-gold-500);
     filter:  saturate(130%) contrast(110%);
 }
 
