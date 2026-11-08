@@ -13,5 +13,5 @@
   align-items: center;
   justify-content: center;
   /* Respiro nas laterais: os cartões não encostam na borda da tela do celular */
-  padding: 1rem;
+  padding: 1rem 1rem 4rem;
 }

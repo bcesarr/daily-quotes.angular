@@ -1,4 +1,4 @@
-# Frases do Dia (Plinsight)
+# Inspira
 
 Site de frases motivacionais. A cada clique em **Nova Frase** aparece uma frase aleatória, sem repetir as que a pessoa já viu, e as frases podem ser filtradas por categoria (Fé, Motivação, Disciplina e outras).
 
@@ -24,6 +24,8 @@ Projeto pessoal e de portfólio, em desenvolvimento. Feito com Angular, TypeScri
 
 - Frase aleatória a cada clique, sem repetir as já exibidas até acabarem (fila por categoria, com novo ciclo quando todas foram vistas).
 - Categorias carregadas do banco (`/categorias/:slug`).
+- Saudação que muda com o horário do aparelho: manhã (05:00–11:59), tarde (12:00–17:59) e noite (18:00–04:59). A mensagem é sorteada entre as 10 de cada período e fica salva no aparelho (`localStorage`), então não troca ao recarregar: só muda quando o período muda ou vira outro dia.
+- Fundo que muda de cor aos poucos com o horário: foto original até 15:30, entardecer gradual (com um brilho dourado no meio) até 19:00, noite igual ao entardecer, e volta à foto original entre 05:00 e 07:00.
 - Contador de acessos e de visitantes no rodapé.
 - Layout responsivo, mobile-first, com menu hambúrguer no celular e cabeçalho que fica fixo ao rolar a página.
 - Páginas: Início, Sobre e 404. Entrar, Cadastre-se e Recuperar senha ainda não estão disponíveis.
@@ -76,7 +78,7 @@ export const environment = {
 | Comando | O que faz |
 | --- | --- |
 | `npm start` | Servidor de desenvolvimento (`ng serve`) |
-| `npm run build` | Build de produção em `dist/frases-do-dia/browser/` |
+| `npm run build` | Build de produção em `dist/inspira/browser/` |
 | `npm run watch` | Build de desenvolvimento que recompila ao salvar |
 | `npm test` | Testes em modo observação |
 | `npx ng test --watch=false` | Roda os testes uma vez e termina |
@@ -101,6 +103,8 @@ src/
     services/
       supabase/                acesso à API do Supabase (modelos Quote e Category)
       category/                lista de categorias
+      day-period/              período do dia (manhã, tarde, noite) usado pela saudação
+      greeting/                saudação por período do dia, salva no aparelho
       quote-queue/             fila de frases sem repetição
       site-status/             contador de acessos e visitantes
 ```
@@ -157,7 +161,7 @@ CSS puro, **mobile-first**: os estilos sem `@media` valem para celular e as `@me
 npx ng test --watch=false
 ```
 
-Cobrem os serviços (fila de frases, categorias, Supabase e contador), o cabeçalho (menu, categorias e cabeçalho fixo), o rodapé e o fundo. O Supabase é substituído por simulações, então nenhum teste faz requisição real.
+Cobrem os serviços (fila de frases, categorias, período do dia, saudação, Supabase e contador), o cabeçalho (menu, categorias e cabeçalho fixo), o rodapé e o fundo. O Supabase é substituído por simulações, então nenhum teste faz requisição real.
 
 ## Build e deploy
 
@@ -165,7 +169,7 @@ Cobrem os serviços (fila de frases, categorias, Supabase e contador), o cabeça
 npm run build
 ```
 
-Os arquivos estáticos ficam em `dist/frases-do-dia/browser/`. Para publicar em qualquer hospedagem estática:
+Os arquivos estáticos ficam em `dist/inspira/browser/`. Para publicar em qualquer hospedagem estática:
 
 - Configure o **fallback para `index.html`** em todas as rotas. Sem isso, abrir `/sobre` direto dá erro 404.
 - Configure **cabeçalhos de segurança** na hospedagem (ainda não configurados): `Content-Security-Policy` (liberando o domínio do Supabase e do Google Fonts), `X-Content-Type-Options: nosniff`, `Referrer-Policy` e `frame-ancestors`.

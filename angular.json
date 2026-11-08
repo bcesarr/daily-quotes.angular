@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "frases-do-dia": {
+    "inspira": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -60,10 +60,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "frases-do-dia:build:production"
+              "buildTarget": "inspira:build:production"
             },
             "development": {
-              "buildTarget": "frases-do-dia:build:development"
+              "buildTarget": "inspira:build:development"
             }
           },
           "defaultConfiguration": "development"

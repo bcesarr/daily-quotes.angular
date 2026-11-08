@@ -25,6 +25,31 @@
     background: var(--sky-wash);
 }
 
+/* ---------- Hora dourada: brilho quente que aparece na transição do dia para a noite ----------
+   Sobe até o máximo no meio do entardecer (por volta de 17:15) e some quando a noite chega.
+   Também aparece por um momento ao amanhecer (por volta de 06:00). A cor está em styles.css. */
+.sky-golden {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, var(--sky-golden-top), var(--sky-golden-bottom));
+    opacity: var(--sky-golden-level, 0);
+    /* O componente atualiza o valor a cada 60s; a transição de 60s "liga" um ponto ao outro,
+       então a cor anda de forma contínua, sem nenhum salto visível. */
+    transition: opacity 60s linear;
+}
+
+/* ---------- Entardecer: escurece e esfria o alto do céu, mantendo um tom quente embaixo ----------
+   Degradê por cima da foto. Começa a aparecer às 15:30 e fica completo às 19:00 (e a noite
+   mantém este visual até as 05:00). A intensidade vem do componente (--sky-dusk-level, de 0 a 1)
+   e as cores (e a % de transparência) ficam em styles.css. */
+.sky-dusk {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, var(--sky-dusk-top), var(--sky-dusk-bottom));
+    opacity: var(--sky-dusk-level, 0);
+    transition: opacity 60s linear;
+}
+
 /* ---------- Folhas: 12 folhas verdes cruzam a tela balançando ---------- */
 .leaves,
 .wind {
@@ -126,8 +151,14 @@
     100% { transform: translate3d(135vw, -40px, 0) scaleX(1.5) rotate(1.5deg); opacity: 0; }
 }
 
-/* Quem pediu "reduzir movimento" no sistema vê tudo parado: as folhas ficam paradas e o vento some. */
+/* Quem pediu "reduzir movimento" no sistema vê tudo parado: as folhas ficam paradas e o vento some.
+   As cores do fundo continuam mudando com o horário, mas sem transição animada. */
 @media (prefers-reduced-motion: reduce) {
+    .sky-golden,
+    .sky-dusk {
+        transition: none;
+    }
+
     .leaf {
         animation: none;
         left: 20%;

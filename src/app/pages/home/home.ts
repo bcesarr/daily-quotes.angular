@@ -1,5 +1,6 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { GreetingService } from '../../services/greeting/greeting';
 import { QuoteQueueService } from '../../services/quote-queue/quote-queue';
 import { Quote } from '../../services/supabase/supabase';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -15,6 +16,11 @@ export class Home implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly quoteQueue = inject(QuoteQueueService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly greetingService = inject(GreetingService);
+
+  // Saudação sorteada uma única vez ao abrir a página (de acordo com a hora do aparelho).
+  // Fica fixa enquanto a pessoa clica em "Nova Frase", para o texto não ficar trocando.
+  protected readonly greeting = this.greetingService.getGreeting();
   protected readonly quote = signal<Quote | null>(null);
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly isLoadingQuote = signal(false);

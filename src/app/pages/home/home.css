@@ -6,6 +6,23 @@
     align-items: center;
 }
 
+.welcome-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 33rem;
+    padding: 0 0 2rem;
+}
+
+.welcome-text {
+    color: var(--palette-blue-800);
+    text-align: center;
+    text-wrap: balance;
+    font-size: var(--font-size-h3);
+    opacity: 90%;
+}
+
 .quote-container {
     width: 100%; /* era 33rem fixo: estourava a tela do celular */
     max-width: 33rem; /* em telas grandes continua com os mesmos 33rem */

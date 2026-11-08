@@ -19,6 +19,10 @@
     /* ---------- Fundo do site: foto do amanhecer, folhas e vento ---------- */
     --sky-fallback: oklch(0.96 0.012 230);        /* azul clarinho mostrado enquanto a foto carrega */
     --sky-wash: oklch(0.99 0.006 100 / 15%);      /* véu claro por cima da foto */
+    --sky-golden-top: oklch(0.86 0.08 85 / 14%);  /* hora dourada: luz âmbar suave no alto... */
+    --sky-golden-bottom: oklch(0.74 0.15 55 / 26%); /* ...e mais forte perto do horizonte */
+    --sky-dusk-top: oklch(0.32 0.05 265 / 22%);   /* entardecer (tarde e noite): escurecimento no alto... */
+    --sky-dusk-bottom: oklch(0.55 0.12 55 / 18%); /* ...e tom quente embaixo. Aumente a % para escurecer mais */
     --leaf: oklch(0.48 0.12 137);                 /* verde das folhas */
     --leaf-light: oklch(0.59 0.1 134);            /* nervura da folha */
     --wind-line: oklch(1 0 0 / 60%);              /* rajadas de vento */
