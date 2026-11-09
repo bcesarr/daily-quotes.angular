@@ -1,6 +1,6 @@
 /* Fundo fixo atrás de TODO o site: ocupa a tela inteira, fica por baixo do conteúdo (z-index -1)
    e não recebe cliques (pointer-events: none). As camadas aparecem na ordem do HTML:
-   foto, véu claro, folhas e vento. */
+   foto da manhã, foto da tarde, foto da noite, véu claro, estrelas, folhas e vento. */
 :host {
     position: fixed;
     inset: 0;
@@ -10,13 +10,30 @@
     pointer-events: none;
 }
 
-/* ---------- Foto do amanhecer + véu claro ---------- */
-.sky-background {
+/* ---------- Fotos do céu (manhã, tarde e noite) + véu claro ---------- */
+.sky-photo {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover; /* preenche a tela inteira sem deformar a foto */
+}
+
+/* A foto da tarde e a da noite ficam por cima e ganham opacidade aos poucos (o valor vem do
+   componente, em style="opacity: ..."). O componente atualiza o valor a cada 60s; a transição de
+   60s "liga" um valor ao outro, então a imagem muda de forma contínua, sem nenhum salto visível. */
+.sky-photo-afternoon,
+.sky-photo-night {
+    transition: opacity 60s linear;
+}
+
+/* Cor mostrada enquanto a foto ainda está baixando (evita um "clarão" da foto da manhã por baixo) */
+.sky-photo-afternoon {
+    background-color: var(--sky-afternoon-fallback);
+}
+
+.sky-photo-night {
+    background-color: var(--sky-night-fallback);
 }
 
 .sky-wash {
@@ -25,29 +42,28 @@
     background: var(--sky-wash);
 }
 
-/* ---------- Hora dourada: brilho quente que aparece na transição do dia para a noite ----------
-   Sobe até o máximo no meio do entardecer (por volta de 17:15) e some quando a noite chega.
-   Também aparece por um momento ao amanhecer (por volta de 06:00). A cor está em styles.css. */
-.sky-golden {
+/* ---------- Estrelas (só à noite): poucas, pequenas e com brilho suave que cintila devagar ---------- */
+.stars {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, var(--sky-golden-top), var(--sky-golden-bottom));
-    opacity: var(--sky-golden-level, 0);
-    /* O componente atualiza o valor a cada 60s; a transição de 60s "liga" um ponto ao outro,
-       então a cor anda de forma contínua, sem nenhum salto visível. */
-    transition: opacity 60s linear;
+    overflow: hidden;
+    pointer-events: none;
+    transition: opacity 60s linear; /* aparecem aos poucos, junto com a foto da noite */
 }
 
-/* ---------- Entardecer: escurece e esfria o alto do céu, mantendo um tom quente embaixo ----------
-   Degradê por cima da foto. Começa a aparecer às 15:30 e fica completo às 19:00 (e a noite
-   mantém este visual até as 05:00). A intensidade vem do componente (--sky-dusk-level, de 0 a 1)
-   e as cores (e a % de transparência) ficam em styles.css. */
-.sky-dusk {
+/* A posição, o tamanho e o tempo de cada estrela vêm do componente (style inline) */
+.star {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, var(--sky-dusk-top), var(--sky-dusk-bottom));
-    opacity: var(--sky-dusk-level, 0);
-    transition: opacity 60s linear;
+    border-radius: 50%;
+    background: var(--star-color);
+    box-shadow: 0 0 6px 1px var(--star-glow);
+    animation: twinkle 5s ease-in-out infinite;
+}
+
+/* Cintilar: a estrela escurece quase por completo e volta a brilhar, crescendo um pouquinho */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.15); }
 }
 
 /* ---------- Folhas: 12 folhas verdes cruzam a tela balançando ---------- */
@@ -57,6 +73,11 @@
     inset: 0;
     overflow: hidden;
     pointer-events: none;
+}
+
+/* As folhas somem aos poucos quando a noite chega (e voltam de manhã) */
+.leaves {
+    transition: opacity 60s linear;
 }
 
 /* Duas animações juntas: "wind" leva a folha pela tela (e gira) e "flutter" faz ela subir e descer.
@@ -151,12 +172,19 @@
     100% { transform: translate3d(135vw, -40px, 0) scaleX(1.5) rotate(1.5deg); opacity: 0; }
 }
 
-/* Quem pediu "reduzir movimento" no sistema vê tudo parado: as folhas ficam paradas e o vento some.
-   As cores do fundo continuam mudando com o horário, mas sem transição animada. */
+/* Quem pediu "reduzir movimento" no sistema vê tudo parado: as folhas ficam paradas, o vento some e as
+   estrelas não cintilam. As fotos continuam trocando com o horário, mas sem transição animada. */
 @media (prefers-reduced-motion: reduce) {
-    .sky-golden,
-    .sky-dusk {
+    .sky-photo-afternoon,
+    .sky-photo-night,
+    .stars,
+    .leaves {
         transition: none;
+    }
+
+    .star {
+        animation: none;
+        opacity: 0.7;
     }
 
     .leaf {

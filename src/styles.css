@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Manrope:wght@400;500;700;800&display=swap');
 
 :root {
     /* ---------- Paleta: cores sem significado ---------- */
@@ -7,26 +7,44 @@
     --palette-navy-700: #123875;
     --palette-blue-950: #0a1128;
     --palette-blue-800: #123875;
+    --palette-blue-700: oklch(0.36 0.17 262);  /* azul de destaque escuro (tarde); mesma claridade do navy-700, porém mais vivo */
+    --palette-blue-600: oklch(0.46 0.2 258);   /* azul de destaque, mais vivo que o azul-marinho */
     --palette-blue-500: #007bff;
     --palette-blue-400: #69c6ff;
     --palette-blue-200: #bfdbfe;
+
+    /* Tons claros usados no texto à noite (branco levemente azulado, como o céu da foto) */
+    --palette-ice-50: oklch(0.99 0.008 250);
+    --palette-ice-200: oklch(0.87 0.04 250);
 
     --palette-gold-500: #e7a32e; 
     --palette-yellow-gold-500: #f4b64c;
     --palette-honey-100: #ffd58c;
     --palette-slate-100: #f8fafc;
 
-    /* ---------- Fundo do site: foto do amanhecer, folhas e vento ---------- */
-    --sky-fallback: oklch(0.96 0.012 230);        /* azul clarinho mostrado enquanto a foto carrega */
-    --sky-wash: oklch(0.99 0.006 100 / 15%);      /* véu claro por cima da foto */
-    --sky-golden-top: oklch(0.86 0.08 85 / 14%);  /* hora dourada: luz âmbar suave no alto... */
-    --sky-golden-bottom: oklch(0.74 0.15 55 / 26%); /* ...e mais forte perto do horizonte */
-    --sky-dusk-top: oklch(0.32 0.05 265 / 22%);   /* entardecer (tarde e noite): escurecimento no alto... */
-    --sky-dusk-bottom: oklch(0.55 0.12 55 / 18%); /* ...e tom quente embaixo. Aumente a % para escurecer mais */
+    /* ---------- Fundo do site: fotos do céu (manhã, tarde e noite), folhas e vento ---------- */
+    --sky-fallback: oklch(0.96 0.012 230);        /* azul clarinho mostrado enquanto a foto da manhã carrega */
+    --sky-afternoon-fallback: oklch(0.8 0.12 70); /* laranja mostrado enquanto a foto da tarde carrega */
+    --sky-night-fallback: oklch(0.22 0.09 265);   /* azul-escuro mostrado enquanto a foto da noite carrega */
+    --sky-wash: oklch(0.99 0.006 100 / 15%);      /* véu claro por cima das fotos */
     --leaf: oklch(0.48 0.12 137);                 /* verde das folhas */
     --leaf-light: oklch(0.59 0.1 134);            /* nervura da folha */
     --wind-line: oklch(1 0 0 / 60%);              /* rajadas de vento */
     --wind-swirl: oklch(1 0 0 / 45%);             /* redemoinhos */
+    --star-color: oklch(0.98 0.015 250);          /* estrelas da noite */
+    --star-glow: oklch(0.9 0.08 250 / 70%);       /* brilho suave ao redor de cada estrela */
+
+    /* ---------- Hora do dia no visual ----------
+       O componente <app-sky-background> atualiza estes dois valores no <html> a cada minuto
+       (iguais à opacidade das fotos), então eles mudam aos poucos ao longo do dia:
+       --afternoon-level: 0 = foto da manhã, 1 = foto da tarde completa.
+       --night-level:     0 = dia,           1 = noite. */
+    --afternoon-level: 0;
+    --night-level: 0;
+    /* O texto precisa trocar de cor mais rápido que a foto: se as duas coisas mudassem juntas, no meio
+       da transição o fundo e o texto teriam quase o mesmo tom e ninguém conseguiria ler. Por isso o texto
+       troca só entre 35% e 65% da noite (cerca de 15 minutos). */
+    --text-night-level: clamp(0, calc((var(--night-level) - 0.35) * 3.3334), 1);
 
     /* Borda clara usada nos botões e no cabeçalho fixo */
     --color-border-light: rgba(255, 255, 255, 0.70);
@@ -34,17 +52,43 @@
     /* ---------- Tokens semânticos: o que a cor representa ---------- */
     --color-background: var(--palette-navy-900);
 
-    --color-text-on-light: var(--palette-navy-700);
-    --color-text-logo: var(--palette-navy-700);
+    /* Cores de texto, em três momentos do dia que trocam aos poucos:
+       manhã = azul-marinho (navy-700); tarde = um tom mais escuro (navy-800), porque a foto da tarde é
+       mais azul e pedia mais contraste; noite = branco azulado. Três tons, como a escala de azuis:
+       principal (títulos, frases, menu), suave (detalhes) e destaque. Os valores "-day" cobrem manhã e
+       tarde; a noite entra por cima. */
+    --color-text-day: color-mix(in oklch, var(--palette-navy-800) calc(var(--afternoon-level) * 100%), var(--palette-navy-700));
+    --color-text: color-mix(in oklch, var(--palette-ice-50) calc(var(--text-night-level) * 100%), var(--color-text-day));
+
+    --color-text-soft: color-mix(in oklch, var(--palette-ice-200) calc(var(--text-night-level) * 100%), var(--palette-navy-800));
+
+    --color-text-accent-day: color-mix(in oklch, var(--palette-blue-700) calc(var(--afternoon-level) * 100%), var(--palette-blue-600));
+    --color-text-accent: color-mix(in oklch, var(--palette-blue-400) calc(var(--text-night-level) * 100%), var(--color-text-accent-day));
 
     --color-link: var(--palette-honey-100);
     --color-link-line: var(--palette-honey-100);
     --color-link-sign-in: var(--palette-yellow-gold-500);
 
-    --color-button-bg: var(--palette-navy-700);
-    --color-button-bg-hover: var(--palette-navy-800);
+    /* Botões: o texto dourado é sempre o mesmo (contraste alto nos três momentos). O que muda é o
+       fundo do botão: azul-marinho (manhã), um tom mais escuro (tarde) e azul médio com borda clara (noite),
+       para o botão continuar visível sobre o céu escuro. Também trocam junto com o texto. */
+    --color-button-bg-day: color-mix(in oklch, var(--palette-navy-800) calc(var(--afternoon-level) * 100%), var(--palette-navy-700));
+    --color-button-bg: color-mix(in oklch, var(--palette-blue-600) calc(var(--text-night-level) * 100%), var(--color-button-bg-day));
+    --color-button-bg-hover-day: color-mix(in oklch, var(--palette-navy-900) calc(var(--afternoon-level) * 100%), var(--palette-navy-800));
+    --color-button-bg-hover: color-mix(in oklch, var(--palette-blue-700) calc(var(--text-night-level) * 100%), var(--color-button-bg-hover-day));
+    --color-button-border: color-mix(in oklch, oklch(1 0 0 / 45%) calc(var(--text-night-level) * 100%), transparent);
     --color-button-text: var(--palette-honey-100);
     --color-button-text-hover: var(--palette-honey-100);
+
+    /* ---------- Famílias de fonte ----------
+       Manrope: todo o site (textos, títulos, menu, botões, rodapé e logo).
+       Cormorant Garamond: somente as frases motivacionais, o nome do autor e a citação da página Sobre. */
+    --font-sans: 'Manrope', system-ui, sans-serif;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    /* A Cormorant tem letras minúsculas menores que as da Manrope no mesmo tamanho.
+       Este valor (altura da letra "x" em relação ao tamanho da fonte) faz o navegador
+       aumentar a Cormorant para ela parecer do mesmo tamanho. Aumente se achar pequena. */
+    --font-serif-x-height: 0.47;
 
     /* ---------- Escala tipográfica (única para o site todo) ----------
        Cada tamanho é "fluido": cresce suavemente entre o celular (360px) e 1440px,
@@ -84,7 +128,6 @@
     padding: 0;
     box-sizing: border-box;
     text-decoration: none;
-    font-family: "DM Sans", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
 }
@@ -136,12 +179,23 @@ img {
 }
 
 body {
+    /* A fonte padrão é definida AQUI (e herdada) e não no "*": assim um trecho dentro de um título
+       (como a palavra "SOBRE") continua na fonte do título, em vez de voltar para a fonte do texto. */
+    font-family: var(--font-sans);
     font-size: var(--font-size-body); /* tamanho padrão de todo texto que não define o seu próprio */
-    /* A foto do amanhecer, as folhas e o vento são desenhados pelo componente <app-sky-background>.
+    /* As fotos do céu, as folhas e o vento são desenhados pelo componente <app-sky-background>.
        Aqui fica só a cor de segurança, caso a foto ainda não tenha carregado. */
     background-color: var(--sky-fallback);
     /* Fundo anterior, guardado para referência:
        background: linear-gradient(135deg, var(--palette-blue-400), var(--palette-gold-500)); */
+}
+
+/* Botões e campos de formulário não herdam a fonte sozinhos: sem isto usariam a fonte do sistema */
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
 }
 
 h1 {
@@ -164,11 +218,14 @@ p {
   line-height: var(--line-height-body);
 }
 
-/* Frases */
+/* Frases motivacionais: a única fonte com serifa do site (junto com a citação da página Sobre) */
 blockquote {
+    font-family: var(--font-serif);
+    font-size-adjust: var(--font-serif-x-height);
     font-size: var(--font-size-quote);
     font-style: italic;
+    font-weight: 500; /* a Cormorant é fina; no peso 400 fica frágil sobre a foto */
     line-height: 1.5;
-    color: var(--color-text-on-light);
+    color: var(--color-text);
     text-align: center;
 }

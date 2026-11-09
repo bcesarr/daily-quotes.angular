@@ -25,7 +25,9 @@ Projeto pessoal e de portfólio, em desenvolvimento. Feito com Angular, TypeScri
 - Frase aleatória a cada clique, sem repetir as já exibidas até acabarem (fila por categoria, com novo ciclo quando todas foram vistas).
 - Categorias carregadas do banco (`/categorias/:slug`).
 - Saudação que muda com o horário do aparelho: manhã (05:00–11:59), tarde (12:00–17:59) e noite (18:00–04:59). A mensagem é sorteada entre as 10 de cada período e fica salva no aparelho (`localStorage`), então não troca ao recarregar: só muda quando o período muda ou vira outro dia.
-- Fundo que muda de cor aos poucos com o horário: foto original até 15:30, entardecer gradual (com um brilho dourado no meio) até 19:00, noite igual ao entardecer, e volta à foto original entre 05:00 e 07:00.
+- Fundo com três fotos do céu (manhã, entardecer e noite) que se misturam aos poucos, sem saltos: foto da manhã até 15:30; entardecer entre 15:30 e 17:00; noite entre 18:00 e 19:00; e volta à manhã entre 05:00 e 07:00. Cada foto só é baixada quando aparece.
+- À noite as folhas somem suavemente (o vento continua) e aparecem poucas estrelas com brilho suave que cintila. As cores do texto passam do azul-marinho ao branco azulado, também aos poucos.
+- Página Sobre com o mesmo vidro desfocado do cartão das frases.
 - Contador de acessos e de visitantes no rodapé.
 - Layout responsivo, mobile-first, com menu hambúrguer no celular e cabeçalho que fica fixo ao rolar a página.
 - Páginas: Início, Sobre e 404. Entrar, Cadastre-se e Recuperar senha ainda não estão disponíveis.
@@ -88,7 +90,7 @@ export const environment = {
 ```text
 public/
   icons/                       ícones SVG (redes sociais, setas)
-  images/sunrise.jpg           foto do fundo
+  images/                      fotos do céu: sunrise.jpg (manhã), afternoon.jpg (entardecer) e night.jpg (noite)
 src/
   environments/                configuração por ambiente
   styles.css                   tokens (cores, tipografia, animações) e estilos globais
@@ -140,7 +142,8 @@ CSS puro, **mobile-first**: os estilos sem `@media` valem para celular e as `@me
 - **Telas grandes:** o tamanho-base do `html` aumenta em 1440px, 1920px, 2560px e 3840px, e como tudo usa `rem`, a interface cresce proporcionalmente.
 - **Tipografia:** escala fluida única em tokens (`--font-size-h1`, `--font-size-body`, `--font-size-link` e outros). Nenhum CSS usa `font-size` fixo.
 - **Tokens:** paleta, cores semânticas, tipografia e animações do menu ficam no `:root` do `src/styles.css`.
-- **Fonte:** DM Sans, pelo Google Fonts.
+- **Cores de texto e de botão por horário:** `--color-text`, `--color-text-soft`, `--color-text-accent` e `--color-button-*` passam de manhã (azul-marinho) para tarde (um tom mais escuro de azul-marinho, por causa da foto mais azul) e noite (branco azulado). Elas dependem de `--afternoon-level` e `--night-level` (de 0 a 1), que o componente `sky-background` atualiza no `<html>` a cada minuto. Use sempre estes tokens para cor de texto e de botão, e não as cores da paleta direto.
+- **Fontes:** Manrope em todo o site e Cormorant Garamond somente nas frases motivacionais, no nome do autor e na citação da página Sobre, pelo Google Fonts. Os nomes ficam nos tokens `--font-sans` e `--font-serif`.
 
 ## Acessibilidade
 

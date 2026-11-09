@@ -16,7 +16,7 @@
 }
 
 .welcome-text {
-    color: var(--palette-blue-800);
+    color: var(--color-text);
     text-align: center;
     text-wrap: balance;
     font-size: var(--font-size-h3);
@@ -41,7 +41,7 @@
 
 .quote-loading {
     font-size: var(--font-size-author);
-    color: var(--palette-blue-800);
+    color: var(--color-text);
     text-align: center;
     margin: 0;
 }
@@ -54,9 +54,12 @@
 }
 
 .quote-author {
+    font-family: var(--font-serif);
+    font-size-adjust: var(--font-serif-x-height);
     font-size: var(--font-size-author);
     font-style: italic;
-    color: var(--palette-navy-800);
+    font-weight: 500;
+    color: var(--color-text-soft);
     text-align: center;
     margin: 0;
     padding-bottom: 1.5rem;
@@ -64,7 +67,7 @@
 
 .quote-error {
     font-size: var(--font-size-author);
-    color: var(--palette-blue-800);
+    color: var(--color-text);
     text-align: center;
     margin: 0;
     padding: 1rem;
@@ -78,7 +81,7 @@
     font-size: var(--font-size-body);
     color: var(--color-button-text);
     background-color: var(--color-button-bg);
-    border: none;
+    border: 1px solid var(--color-button-border); /* transparente de dia; borda clara à noite */
     border-radius: 0.6rem;
     cursor: pointer;
     transition: transform .35s ease, box-shadow .35s ease;

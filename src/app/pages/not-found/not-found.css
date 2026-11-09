@@ -21,7 +21,7 @@
 
 .not-found-title {
     font-size: var(--font-size-h2);
-    color: var(--color-text-on-light);
+    color: var(--color-text);
     text-align: center;
     text-wrap: pretty;
 }
@@ -30,7 +30,7 @@
     margin: 0;
     font-size: var(--font-size-quote);
     line-height: 1.5;
-    color: var(--color-text-on-light);
+    color: var(--color-text);
     text-align: center;
     text-wrap: pretty;
     overflow-wrap: break-word;
@@ -41,7 +41,7 @@
     justify-content: center;
     align-items: center;
     font-size: var(--font-size-link);
-    color: var(--palette-navy-800);
+    color: var(--color-text-soft);
     gap: 0.2rem;
     transition: 0.3s ease;
 }

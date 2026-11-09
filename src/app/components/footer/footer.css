@@ -105,7 +105,7 @@ Footer {
    então o texto branco sumiria. Passam para o azul-escuro do site. */
 @media (min-width: 48rem) {
     .site-footer-stats p {
-        color: var(--color-text-on-light);
+        color: var(--color-text);
         opacity: 100%;
     }
 }

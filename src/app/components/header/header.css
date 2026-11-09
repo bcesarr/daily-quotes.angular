@@ -33,7 +33,13 @@ header::before {
     position: absolute;
     inset: 0;
     z-index: -1;
-    background-color: rgba(255, 255, 255, 0.45);
+    /* Branco translúcido de dia; azul-escuro translúcido à noite (senão o texto branco sumiria sobre
+       o vidro claro). Troca junto com o texto, pelo mesmo nível (--text-night-level). */
+    background-color: color-mix(
+        in oklch,
+        oklch(0.2 0.06 265 / 55%) calc(var(--text-night-level) * 100%),
+        oklch(1 0 0 / 45%)
+    );
     backdrop-filter: blur(10px);
     opacity: 0;
     transition: opacity var(--duration-menu) var(--ease-menu);
@@ -64,7 +70,7 @@ header::before {
 
 .logo-container a h1 {
     font-size: var(--font-size-logo);
-    color: var(--color-text-logo);
+    color: var(--color-text);
 }
 
 /* ---------- Botão hambúrguer (some no tablet/desktop) ---------- */
@@ -87,7 +93,7 @@ header::before {
     display: block;
     width: 1.5rem;
     height: 2px;
-    background-color: var(--color-text-logo);
+    background-color: var(--color-text);
     border-radius: 2px;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
@@ -177,7 +183,7 @@ header::before {
     }
 
     .header-menu {
-        --header-link-color: var(--color-text-logo);
+        --header-link-color: var(--color-text);
         display: contents;
         visibility: visible;
         opacity: 1;

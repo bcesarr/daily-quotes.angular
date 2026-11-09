@@ -15,35 +15,40 @@
     justify-content: center;
     align-items: center;
     padding: 0.5rem; /* o texto já tem 1rem próprio; evita acumular margens no celular */
-    background-color: rgba(255, 255,  255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     border: 1px solid white;
     border-radius: 1rem;
     gap: 1.4rem;
 }
 
 .about-title {
-    color: var(--palette-navy-700);
+    color: var(--color-text);
     padding: 0px 1rem;
     filter: drop-shadow(1px 1px 1px #4f4f4f5d);
 }
 
+/* Destaque da palavra "SOBRE": um tom de azul mais vivo que o do título (de dia) e azul-claro (à noite),
+   mais peso na letra. A cor vem do token --color-text-accent, que muda sozinho com o horário. */
 .about-span {
-    /* ouro em vez de mel: o mel (#ffd58c) quase some sobre o céu claro do fundo */
-    color: var(--palette-gold-500);
-    filter:  saturate(130%) contrast(110%);
+    color: var(--color-text-accent);
+    font-weight: 800;
 }
 
 .about-text {
-    color: var(--palette-navy-700);
+    color: var(--color-text);
     padding: 0px 1rem;
     text-align: left; /* texto justificado em coluna estreita cria buracos entre palavras */
 }
 
 .about-text-quote {
     margin-bottom: 0;
-    color: var(--palette-navy-700);
+    color: var(--color-text);
     padding: 0px 1rem;
+    font-family: var(--font-serif);
+    font-size-adjust: var(--font-serif-x-height);
     font-style: italic;
+    font-weight: 500;
 }
 
 /* Celular grande / deitado (640px+): volta o respiro interno e o texto justificado */

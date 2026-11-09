@@ -1,15 +1,47 @@
-<!-- Camadas de trás para frente: foto do amanhecer, véu claro, hora dourada, entardecer, folhas e vento -->
-<img class="sky-background" src="images/sunrise.jpg" alt="" width="1920" height="1280" fetchpriority="high">
+<!-- Camadas de trás para frente: foto da manhã (base), foto da tarde, foto da noite, véu claro, estrelas,
+     folhas e vento. A tarde e a noite ficam por cima e ganham opacidade aos poucos (veja sky-tone.ts).
+     Cada foto só existe na página quando está visível, então ninguém baixa uma imagem que não vai ver. -->
+@if (tone().night < 1) {
+    <img class="sky-photo sky-photo-sunrise" src="images/sunrise.jpg" alt="" width="1920" height="1280" fetchpriority="high">
+}
+
+@if (tone().afternoon > 0) {
+    <img class="sky-photo sky-photo-afternoon" src="images/afternoon.jpg" alt="" width="1920" height="1280"
+        fetchpriority="high" [style.opacity]="tone().afternoon">
+}
+
+@if (tone().night > 0) {
+    <img class="sky-photo sky-photo-night" src="images/night.jpg" alt="" width="1920" height="1280"
+        fetchpriority="high" [style.opacity]="tone().night">
+}
+
 <div class="sky-wash"></div>
-<div class="sky-golden"></div>
-<div class="sky-dusk"></div>
 
-<div class="leaves">
-    @for (leaf of leaves; track leaf) {
-        <span class="leaf"></span>
-    }
-</div>
+<!-- Estrelas: aparecem junto com a foto da noite (mesma opacidade) -->
+@if (tone().night > 0) {
+    <div class="stars" [style.opacity]="tone().night">
+        @for (star of stars; track $index) {
+            <span class="star"
+                [style.top.%]="star.top"
+                [style.left.%]="star.left"
+                [style.width.px]="star.size"
+                [style.height.px]="star.size"
+                [style.animation-duration.s]="star.duration"
+                [style.animation-delay.s]="star.delay"></span>
+        }
+    </div>
+}
 
+<!-- Folhas: somem aos poucos junto com a chegada da noite (opacidade = o que falta para a noite completa) -->
+@if (tone().night < 1) {
+    <div class="leaves" [style.opacity]="1 - tone().night">
+        @for (leaf of leaves; track leaf) {
+            <span class="leaf"></span>
+        }
+    </div>
+}
+
+<!-- O vento continua a noite toda -->
 <div class="wind">
     @for (item of windElements; track item) {
         <span [class]="item < 4 ? 'gust' : 'swirl'"></span>
